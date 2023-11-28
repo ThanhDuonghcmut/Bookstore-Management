@@ -1,14 +1,19 @@
 from django.core.paginator import Paginator, EmptyPage
 from django.shortcuts import get_object_or_404
+from django.core.cache import cache
 from rest_framework import status
-from rest_framework.decorators import api_view, permission_classes
+from rest_framework.decorators import api_view, permission_classes, throttle_classes
 from rest_framework.response import Response
+from rest_framework.throttling import AnonRateThrottle, UserRateThrottle
 from .models import Book
 from .serializers import BookSerializers, BookSerializersImage
 from rest_framework.permissions import IsAuthenticated
+from cloudinary import api
+from django.conf import settings
 
 # Create your views here.
 @api_view(['GET'])
+@throttle_classes([AnonRateThrottle])
 def books_viewing(request):
     id = request.query_params.get('id')
     if id:
@@ -23,7 +28,10 @@ def books_viewing(request):
         if not page:
             page = 1
         search_key = request.query_params.get('key')
-        items = Book.objects.all()
+        items = cache.get('all')
+        if items is None:
+            items = Book.objects.all()
+            cache.set('all', items, settings.CACHE_TTL)
         if search_key:
             items = items.filter(author__icontains=search_key) | items.filter(title__icontains=search_key)
         paginator = Paginator(items.order_by('id'), per_page=perpage)
@@ -38,6 +46,7 @@ def books_viewing(request):
         
 @api_view(['POST', 'PATCH', 'DELETE'])
 @permission_classes([IsAuthenticated])
+@throttle_classes([UserRateThrottle])
 def books_modifying(request):
     if request.method == 'POST':
         data = request.data
@@ -69,6 +78,9 @@ def books_modifying(request):
             return Response({'message': 'CANNOT get ID'}, status=status.HTTP_400_BAD_REQUEST)
         try:
             book_item = Book.objects.get(id=id)
+            photo_deleted = book_item.image_public_id
+            if photo_deleted != settings.EMPTY_IMAGE_PUBLIC_ID:
+                api.delete_resources(photo_deleted)
             book_item.delete()
             return Response({'message': f'DELETE book ID {id} successfully'}, status=status.HTTP_204_NO_CONTENT)
         except Book.DoesNotExist:

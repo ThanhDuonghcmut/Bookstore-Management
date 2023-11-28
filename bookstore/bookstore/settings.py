@@ -105,23 +105,24 @@ WSGI_APPLICATION = 'bookstore.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': env('DB_NAME'),
-        'USER': env('DB_USER'),
-        'PASSWORD': env('DB_PASSWORD'),
-        'HOST': env('DB_HOST'),
-        'PORT': env('DB_PORT')
+if env('LOCAL_SQLITE') == 'True':
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': env('DB_NAME'),
+            'USER': env('DB_USER'),
+            'PASSWORD': env('DB_PASSWORD'),
+            'HOST': env('DB_HOST'),
+            'PORT': env('DB_PORT')
+        }
+    }
 
 
 # Password validation
@@ -186,14 +187,24 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # }
 
 CACHE_TTL = 60
-REDIS_CREDENTIALS = env('REDIS_USERNAME') + ':' + env('REDIS_PASSWORD')
-
-CACHES = {
-    "default": {
-        "BACKEND": "django.core.cache.backends.redis.RedisCache",
-        "LOCATION": "redis://" + REDIS_CREDENTIALS + "@redis-16322.c89.us-east-1-3.ec2.cloud.redislabs.com:16322/redis-rediscloud-objective-24222",
+if env('LOCAL_REDIS') == 'True':
+    print('Local cached')
+    CACHES = {
+        "default": {
+            "BACKEND": "django.core.cache.backends.redis.RedisCache",
+            "LOCATION": "redis://localhost:6379/1",
+        }
     }
-}
+else:
+    REDIS_CREDENTIALS = env('REDIS_USERNAME') + ':' + env('REDIS_PASSWORD') + '@'
+    REDIS_DB = env('REDIS_URL') + env('REDIS_DB')
+
+    CACHES = {
+        "default": {
+            "BACKEND": "django.core.cache.backends.redis.RedisCache",
+            "LOCATION": "redis://" + REDIS_CREDENTIALS + REDIS_DB,
+        }
+    }
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/

@@ -13,7 +13,7 @@ from django.conf import settings
 
 # Create your views here.
 @api_view(['GET'])
-@throttle_classes([AnonRateThrottle])
+@throttle_classes([AnonRateThrottle, UserRateThrottle])
 def books_viewing(request):
     id = request.query_params.get('id')
     if id:

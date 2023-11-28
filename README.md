@@ -277,7 +277,7 @@ _Before you run any `python3 manage.py + [command]`, remember to `cd` to the `bo
    ```python
    pip3 install -r requirements.txt
    ```
-4. Create a `.env` file inside the `Bookstore-Management` folder. You can change the fields in my `env.txt` file with your custom value:
+4. Create a `.env` file inside the `Bookstore-Management` folder. You can change the fields in my `env.txt` file with your custom value, then change its file name into `.env`:
    - With `SECRET_KEY` field, you can give it any key you want.
    - With `DEBUG` field, you can set it as True or False, depending on this is for testing or production.
    - With the 3 fields: `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET`, you need to create a **Cloudinary** account, and pass your own **Cloudinary** credentials into these fields.

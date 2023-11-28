@@ -1,2 +1,2 @@
 release: python bookstore/manage.py migrate
-web: gunicorn bookstore.wsgi:application --log-files=-
+web: gunicorn bookstore.wsgi:application --log-file=-

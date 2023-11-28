@@ -1,6 +1,6 @@
 # Bookstore Management Application
 
-This is the repo using for Resola interview coding challenge. This is a simple bookstore management application written in **Python language**, using **Django Framework**, with simple CRUD functions. It also includes authentication functions for user to register and login.
+This is the repo of a simple bookstore management application written in **Python language**, using **Django Framework**, with simple CRUD functions. It also includes authentication functions for user to register and login.
 
 This is an RESTful API application. I use the **Django Rest Framework** to implement the serialization part of the response. All functions, from authentication to CRUD, are handled through RESTful API. We can use API platform like Postman or Swagger, or use the Django REST framwork web interface to interact with this application.
 
@@ -35,7 +35,7 @@ This is an RESTful API application. I use the **Django Rest Framework** to imple
 
 ## System design:
 
-![System design diagram](diagram.png)
+![System design diagram](README_img/diagram.png)
 
 This is the overall design for the system of the application.
 
@@ -153,7 +153,7 @@ I include the CORS headers app inside my application, so other Front-end applica
 
 ### CRUD:
 
-- GET books list:
+- **GET books list**:
 
   - Usage:
     - This request is used to get a list of Book objects. All the objects are paginated for Front-end using, with the number of objects perpage requested by user.
@@ -185,9 +185,9 @@ I include the CORS headers app inside my application, so other Front-end applica
 
     - `404` for the ID of the book that does not exist.
 
-- Modifying books data:
+- **Modifying books data**:
 
-  - POST method:
+  - **POST method**:
 
     - Usage:
       - This request is used to create a new book in the database. The fields required: `title`, `author`, `publish_date`, `ISBN`, `price`.
@@ -203,7 +203,7 @@ I include the CORS headers app inside my application, so other Front-end applica
     {
       "title": "test title",
       "author": "test author",
-      "publish date": "2023-02-03",
+      "publish_date": "2023-02-03",
       "ISBN": "123-12-123",
       "price": 12.0,
       "image": Image FILE
@@ -214,7 +214,7 @@ I include the CORS headers app inside my application, so other Front-end applica
       - `201` for succesfully POST item. If user uploads a new image, the response time is slow as the request needs to finish uploading to **Cloudinary** before response.
       - `400` for the request missing any fields above.
 
-  - PATCH method:
+  - **PATCH method**:
 
     - Usage:
       - This request is used to update the data of an existed book in the database. We can update **partially** instead of **fully** update.
@@ -242,7 +242,7 @@ I include the CORS headers app inside my application, so other Front-end applica
       - `400` for the request with missing `id` or wrong names of any fields above.
       - `404` for the request with `id` that doesn't exist.
 
-  - DELETE method:
+  - **DELETE method**:
     - Usage:
       - This request is used to delete an existed book in the database. The book cover in **Cloudinary** is also deleted if it is not the empty cover.
     - Method allowed: `DELETE`
@@ -256,7 +256,100 @@ I include the CORS headers app inside my application, so other Front-end applica
       - `400` for the request with missing `id`.
       - `404` for the request with `id` that doesn't exist.
 
-## Unit testing:
+## Deployment:
+
+### Live API:
+
+I have deployed the application to Heroku. This is the url: [https://bookstore-management-dd6f9c48e9a9.herokuapp.com](). You can use this url to test the API with Postman or Swagger.
+
+### Locally setup:
+
+If you want to run my code locally for testing, please follow the following steps:
+
+_Before you run any `python3 manage.py + [command]`, remember to `cd` to the `bookstore` folder as it is the father folder of `manage.py`._
+
+1. Clone the project with the command:
+   ```sh
+   git clone https://github.com/ThanhDuonghcmut/Bookstore-Management.git
+   ```
+2. Create a virtual environment for the project.
+3. Install the required library from `requirements.txt` file
+   ```python
+   pip3 install -r requirements.txt
+   ```
+4. Create a `.env` file inside the `Bookstore-Management` folder. You can change the fields in my `env.txt` file with your custom value:
+   - With `SECRET_KEY` field, you can give it any key you want.
+   - With `DEBUG` field, you can set it as True or False, depending on this is for testing or production.
+   - With the 3 fields: `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET`, you need to create a **Cloudinary** account, and pass your own **Cloudinary** credentials into these fields.
+   - With the 3 fields: `EMPTY_IMAGE_PUBLIC_ID`, `EMPTY_IMAGE_URL`, `CLOUDINARY_FOLDER`, it depends on the empty image you upload to your **Cloudinary** cloud, and the folder you want to upload all of your applications' image.
+   - With the field `LOCAL_SQLITE`, you can set to `True` to use the built-in **SQLite3** database of **Django**, or set to `False` to use your external database.
+   - With the 5 fields: `DB_NAME`, `DB_HOST`, `DB_USER`, `DB_PASSWORD`, `DB_PORT`, it depends on the database you want to choose. If you use the built-in **SQLite3** database, you can ignore these fields.
+   - With the field `LOCAL_REDIS`, you can set to `True` to use your local Redis server, or set to `False` to use your external Redis server.
+   - With the 4 fields `REDIS_USERNAME`, `REDIS_PASSWORD`, `REDIS_URL`, `REDIS_DB` you can specify the Redis credentials you want to use. If you use local Redis server, you can ignore these 4 fields.
+5. You can change the default throttling rate and the CACHE TTL into your favorite value in `settings.py`. Please note that the CACHE TTL is in seconds.
+6. After all the changes, you can run the following commands to create the database:
+   ```python
+   python3 manage.py makemigrations
+   python3 manage.py migrate
+   ```
+7. You run the following command to run the local server:
+
+   ```python
+   python3 manage.py runserver
+   ```
+
+8. You can use Postman, Swagger or your web browser directly to test the APIs. The local url is: [http://localhost:8000]()
+
+## Testing:
+
+### API Testing:
+
+I use Postman to test the Live API deployed on **Heroku**. Steps to test API:
+
+1. View book list:
+   [https://bookstore-management-dd6f9c48e9a9.herokuapp.com]()
+   ![GET Book list method](README_img/View%20book%20list.png)
+2. Registration new user:
+   [https://bookstore-management-dd6f9c48e9a9.herokuapp.com/registration]()
+   ![Registration](README_img/Registration.png)
+3. Login with credentials:
+   [https://bookstore-management-dd6f9c48e9a9.herokuapp.com/login]()
+   ![Login](README_img/Login.png)
+   We should save the `access token` for later requests authentication, and `refresh token` for later refreshing for new `access token`.
+4. Post new book:
+   [https://bookstore-management-dd6f9c48e9a9.herokuapp.com/books]()
+   ![POST new book body](README_img/Create%20new%20book%20-%20Body.png)
+   We must add the `access token` to `Authorization header` before calling the request.
+   ![POST new book token](README_img/Create%20new%20book%20-%20Authorization.png)
+5. Update book content:
+   [https://bookstore-management-dd6f9c48e9a9.herokuapp.com/books]()
+   ![PATCH book body](README_img/Update%20book%20-%20Body.png)
+   We must add the `access token` to `Authorization header` before calling the request.
+   ![PATCH book token](README_img/Update%20book%20-%20Authorization.png)
+6. Delete book:
+   [https://bookstore-management-dd6f9c48e9a9.herokuapp.com/books]()
+   ![DELETE book body](README_img/Delete%20book%20-%20Request%20param.png)
+   We must add the `access token` to `Authorization header` before calling the request.
+7. Refresh token:
+   [https://bookstore-management-dd6f9c48e9a9.herokuapp.com/refresh]()
+   ![Refresh token](README_img/Refresh%20token%20-%20Body.png)
+   This method must be called every **2 minutes**, as that is the current token timeout. You could change it in `settings.py`
+
+   ```python
+   SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=2),
+    'AUTH_HEADER_TYPES': ('Bearer',)
+    }
+   ```
+
+   When we get new `access token`, we should save it for later usage.
+
+8. Logout:
+   [https://bookstore-management-dd6f9c48e9a9.herokuapp.com/logout]()
+   ![Logout](README_img/Logout%20-%20Body.png)
+   We must add the `access token` to `Authorization header` before calling the request.
+
+### Unit Testing:
 
 All the test cases for the views and models are written in the tests folder of each app. To run the test cases, we first `cd` to the `/bookstore` folder. Then we run the following commands:
 
@@ -264,48 +357,3 @@ All the test cases for the views and models are written in the tests folder of e
 python3 manage.py test accounts
 python3 manage.py test bookstore_management
 ```
-
-## Deployment:
-
-### Live API:
-
-I have deployed the application to Heroku. This is the url: [https://github.com/resola-ai/challenge-ocelot](). You can use this url to test the API with Postman or Swagger.
-
-### Locally setup:
-
-If you want to run my code locally for testing, please follow the following steps:
-
-1. Clone the project from the following url: [https://github.com/resola-ai/challenge-ocelot]()
-2. Create a virtual environment for the project.
-3. Install the required library from `requirements.txt` file
-   ```python
-   pip3 install -r requirements.txt
-   ```
-4. Create a `.env` file inside the project folder. You can copy my `env.txt` file, and change the fields inside it.
-   - With SECRET_KEY field, you can give it any key you want.
-   - With DEBUG field, you can set it as True or False, depending on this is for testing or production.
-   - With the 3 fields: CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET, you need to create a **Cloudinary** account, and pass your own **Cloudinary** credentials into these fields.
-   - With the 3 fields: EMPTY_IMAGE_PUBLIC_ID, EMPTY_IMAGE_URL, CLOUDINARY_FOLDER, it depends on the empty image you upload to your **Cloudinary** cloud, and the folder you want to upload all of your applications' image.
-   - With the 5 fields: DB_NAME, DB_HOST, DB_PASSWORD,..., it depends on the database you want to choose. If you use the built-in SQLite3 database, you don't need to care these fields.
-   - With the field CACHE_TTL, you can specify the time you want. Remember this number is in second.
-5. You can specify the database you want to use by changing the `DATABASE` variable in `setting.py`, or you can paste the following code snippet:
-   ```python
-   DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-      }
-    }
-   ```
-   in order to use the SQLite3 database.
-6. You can change the default throttling rate and the caches into your favorite one to use.
-7. After all the changes, you can run the following commands to create the database:
-   ```python
-   python3 manage.py makemigrations
-   python3 mange.py migrate
-   ```
-8. You run the following command to run the local server:
-   ```python
-   python3 manage.py runserver
-   ```
-9. You can use Postman, Swagger or your web browser directly to test the APIs. The local url is: `http://localhost:8000`

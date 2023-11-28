@@ -1,10 +1,11 @@
 from django.core.paginator import Paginator, EmptyPage
 from django.shortcuts import get_object_or_404
 from rest_framework import status
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from .models import Book
 from .serializers import BookSerializers, BookSerializersImage
+from rest_framework.permissions import IsAuthenticated
 
 # Create your views here.
 @api_view(['GET'])
@@ -36,6 +37,7 @@ def books_viewing(request):
         
         
 @api_view(['POST', 'PATCH', 'DELETE'])
+@permission_classes([IsAuthenticated])
 def books_modifying(request):
     if request.method == 'POST':
         data = request.data

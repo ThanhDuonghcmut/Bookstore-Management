@@ -50,7 +50,7 @@ SECRET_KEY = env('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env('DEBUG')
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['https://bookstore-management-dd6f9c48e9a9.herokuapp.com']
 
 
 # Application definition

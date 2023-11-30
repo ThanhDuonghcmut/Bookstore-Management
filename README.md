@@ -260,7 +260,7 @@ I include the CORS headers app inside my application, so other Front-end applica
 
 ### Live API:
 
-I have deployed the application to Heroku. This is the url: [https://bookstore-management-dd6f9c48e9a9.herokuapp.com](). You can use this url to test the API with Postman or Swagger.
+I have deployed the application to Heroku. This is the url: [https://bookstore-management-dd6f9c48e9a9.herokuapp.com](https://bookstore-management-dd6f9c48e9a9.herokuapp.com). You can use this url to test the API with Postman or Swagger.
 
 ### Locally setup:
 
@@ -298,7 +298,7 @@ _Before you run any `python3 manage.py + [command]`, remember to `cd` to the `bo
    python3 manage.py runserver
    ```
 
-8. You can use Postman, Swagger or your web browser directly to test the APIs. The local url is: [http://localhost:8000]()
+8. You can use Postman, Swagger or your web browser directly to test the APIs. The local url is: [http://localhost:8000](http://localhost:8000)
 
 ## Testing:
 
@@ -307,31 +307,31 @@ _Before you run any `python3 manage.py + [command]`, remember to `cd` to the `bo
 I use Postman to test the Live API deployed on **Heroku**. Steps to test API:
 
 1. View book list:
-   [https://bookstore-management-dd6f9c48e9a9.herokuapp.com]()
+   [https://bookstore-management-dd6f9c48e9a9.herokuapp.com](https://bookstore-management-dd6f9c48e9a9.herokuapp.com)
    ![GET Book list method](README_img/View%20book%20list.png)
 2. Registration new user:
-   [https://bookstore-management-dd6f9c48e9a9.herokuapp.com/registration]()
+   [https://bookstore-management-dd6f9c48e9a9.herokuapp.com/registration](https://bookstore-management-dd6f9c48e9a9.herokuapp.com/registration)
    ![Registration](README_img/Registration.png)
 3. Login with credentials:
-   [https://bookstore-management-dd6f9c48e9a9.herokuapp.com/login]()
+   [https://bookstore-management-dd6f9c48e9a9.herokuapp.com/login](https://bookstore-management-dd6f9c48e9a9.herokuapp.com/login)
    ![Login](README_img/Login.png)
    We should save the `access token` for later requests authentication, and `refresh token` for later refreshing for new `access token`.
 4. Post new book:
-   [https://bookstore-management-dd6f9c48e9a9.herokuapp.com/books]()
+   [https://bookstore-management-dd6f9c48e9a9.herokuapp.com/books](https://bookstore-management-dd6f9c48e9a9.herokuapp.com/books)
    ![POST new book body](README_img/Create%20new%20book%20-%20Body.png)
    We must add the `access token` to `Authorization header` before calling the request.
    ![POST new book token](README_img/Create%20new%20book%20-%20Authorization.png)
 5. Update book content:
-   [https://bookstore-management-dd6f9c48e9a9.herokuapp.com/books]()
+   [https://bookstore-management-dd6f9c48e9a9.herokuapp.com/books](https://bookstore-management-dd6f9c48e9a9.herokuapp.com/books)
    ![PATCH book body](README_img/Update%20book%20-%20Body.png)
    We must add the `access token` to `Authorization header` before calling the request.
    ![PATCH book token](README_img/Update%20book%20-%20Authorization.png)
 6. Delete book:
-   [https://bookstore-management-dd6f9c48e9a9.herokuapp.com/books]()
+   [https://bookstore-management-dd6f9c48e9a9.herokuapp.com/books](https://bookstore-management-dd6f9c48e9a9.herokuapp.com/books)
    ![DELETE book body](README_img/Delete%20book%20-%20Request%20param.png)
    We must add the `access token` to `Authorization header` before calling the request.
 7. Refresh token:
-   [https://bookstore-management-dd6f9c48e9a9.herokuapp.com/refresh]()
+   [https://bookstore-management-dd6f9c48e9a9.herokuapp.com/refresh](https://bookstore-management-dd6f9c48e9a9.herokuapp.com/refresh)
    ![Refresh token](README_img/Refresh%20token%20-%20Body.png)
    This method must be called every **2 minutes**, as that is the current token timeout. You could change it in `settings.py`
 
@@ -345,7 +345,7 @@ I use Postman to test the Live API deployed on **Heroku**. Steps to test API:
    When we get new `access token`, we should save it for later usage.
 
 8. Logout:
-   [https://bookstore-management-dd6f9c48e9a9.herokuapp.com/logout]()
+   [https://bookstore-management-dd6f9c48e9a9.herokuapp.com/logout](https://bookstore-management-dd6f9c48e9a9.herokuapp.com/logout)
    ![Logout](README_img/Logout%20-%20Body.png)
    We must add the `access token` to `Authorization header` before calling the request.
 
